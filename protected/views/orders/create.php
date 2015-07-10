@@ -3,8 +3,8 @@
 /* @var $model Orders */
 
 $this->breadcrumbs=array(
-	'Orders'=>array('index'),
-	'Create',
+	'预约系统'=>array('index'),
+	'添加预约',
 );
 
 $this->menu=array(

@@ -3,7 +3,7 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Orders',
+	'预约系统',
 );
 
 $this->menu=array(
