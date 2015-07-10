@@ -47,8 +47,8 @@ return array(
 			'loginUrl' => array('/user/login'),
 		),
 		// uncomment the following to enable URLs in path-format
-		/*
 		'urlManager'=>array(
+		    'showScriptName'=>false,
 			'urlFormat'=>'path',
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
@@ -56,7 +56,6 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
-		*/
 		'db'=>array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
 		),

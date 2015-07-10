@@ -1,26 +1,22 @@
 <?php
 
 /**
- * This is the model class for table "orders".
+ * This is the model class for table "cars".
  *
- * The followings are the available columns in table 'orders':
+ * The followings are the available columns in table 'cars':
  * @property string $id
- * @property string $user_id
- * @property string $car_id
- * @property string $operator_id
- * @property string $date
- * @property string $time
- * @property string $comment
- * @property string $created
+ * @property string $licenseNumber
+ * @property string $ower_id
+ * @property string $type_id
  */
-class Orders extends CActiveRecord
+class Cars extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{orders}}';
+		return 'cars';
 	}
 
 	/**
@@ -31,15 +27,11 @@ class Orders extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, car_id, operator_id, date, created', 'required'),
-			array('user_id, car_id', 'length', 'max'=>20),
-			array('time', 'length', 'max'=>2),
-			array('comment', 'length', 'max'=>255),
-		    array('operator_id', 'default', 'value' => 1, 'on' => 'insert'),
-		    array('created', 'default', 'value' => new CDbExpression('NOW()'), 'on' => 'insert'),
+			array('licenseNumber, ower_id, type_id', 'required'),
+			array('licenseNumber, ower_id, type_id', 'length', 'max'=>20),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, car_id, date, time, comment, created', 'safe', 'on'=>'search'),
+			array('id, licenseNumber, ower_id, type_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,12 +53,9 @@ class Orders extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'user_id' => '车主',
-			'car_id' => '车',
-			'date' => '接车日期',
-			'time' => '接车时间',
-			'comment' => '备注',
-			'created' => '创建时间',
+			'licenseNumber' => 'License Number',
+			'ower_id' => 'Ower',
+			'type_id' => 'Type',
 		);
 	}
 
@@ -89,12 +78,9 @@ class Orders extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id,true);
-		$criteria->compare('user_id',$this->user_id,true);
-		$criteria->compare('car_id',$this->car_id,true);
-		$criteria->compare('date',$this->date,true);
-		$criteria->compare('time',$this->time,true);
-		$criteria->compare('comment',$this->comment,true);
-		$criteria->compare('created',$this->created,true);
+		$criteria->compare('licenseNumber',$this->licenseNumber,true);
+		$criteria->compare('ower_id',$this->ower_id,true);
+		$criteria->compare('type_id',$this->type_id,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -105,7 +91,7 @@ class Orders extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Orders the static model class
+	 * @return Cars the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
