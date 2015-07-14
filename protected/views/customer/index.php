@@ -59,7 +59,7 @@
                 ));
                 ?>
                 <?php
-                $columns1 = array('licenseNumber', array('name'=>'type_id', 'type'=>'html', 'value'=>'$data->type_name->name'));
+                $columns1 = array('licenseNumber', array('name'=>'type_id', 'type'=>'html', 'value'=>'$data->type->name'));
                 //if ($hasType) array_push($columns, 'type');
                 
                 array_push($columns1, array(
@@ -71,7 +71,7 @@
 	                				'url'=>'Yii::app()->createUrl("orders/create", array("car"=>$data->id))',
                 				)),
                 		'updateButtonUrl'=>'Yii::app()->createUrl("customer/updateCar", array("id"=>$data->id))',
-                		'deleteButtonUrl'=>'Yii::app()->createUrl("customer/deleteCar", array("id"=>$data->id))', 'template' => '{view}{update}{delete}{book}'
+                		'deleteButtonUrl'=>'Yii::app()->createUrl("customer/deleteCar", array("id"=>$data->id))', 'template' => '{update}{delete}{book}'
                 		));
                 
                 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -92,7 +92,7 @@
                 		'class'=>'bootstrap.widgets.TbButtonColumn', 
                 		'deleteConfirmation'=>'确认删除此条记录？', 
                 		'updateButtonUrl'=>'Yii::app()->createUrl("orders/update", array("id"=>$data->id))',
-                		'deleteButtonUrl'=>'Yii::app()->createUrl("orders/delete", array("id"=>$data->id))','template' => '{view}{update}{delete}'));
+                		'deleteButtonUrl'=>'Yii::app()->createUrl("orders/delete", array("id"=>$data->id))','template' => '{update}{delete}'));
                 
                 $this->widget('bootstrap.widgets.TbGridView', array(
                 		'id' => 'order-grid',

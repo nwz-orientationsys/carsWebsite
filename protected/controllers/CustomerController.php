@@ -22,6 +22,10 @@ class CustomerController extends Controller
     public function accessRules()
     {
         return array(
+        		array('allow',
+        				'actions'=>array('login'),
+        				'users'=>array('*')
+        		),
                 array('allow',  // allow all users to perform 'index' and 'view' actions
                         'actions'=>array('index', 'createCar', 'updateCar', 'deleteCar', 'update'),
                         'roles'=>array('customer'),
@@ -134,6 +138,29 @@ class CustomerController extends Controller
             $this->redirect(array('customer'));
     }
     
+    //Customer login
+    public function actionLogin(){
+    	$model=new CustomerLoginForm;
+    
+    	// if it is ajax validation request
+    	if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+    	{
+    		echo CActiveForm::validate($model);
+    		Yii::app()->end();
+    	}
+    
+    	// collect user input data
+    	if(isset($_POST['CustomerLoginForm']))
+    	{
+    		$model->attributes=$_POST['CustomerLoginForm'];
+    		// validate user input and redirect to the previous page if valid
+    		if($model->validate() && $model->login())
+    			$this->redirect(Yii::app()->createUrl('customer/index'));
+    	}
+    	// display the login form
+    	$this->renderPartial('login',array('model'=>$model));
+    }
+    
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
@@ -143,7 +170,7 @@ class CustomerController extends Controller
      */
     public function loadModel($id)
     {
-        $model=User::model()->findByPk($id);
+        $model=Customer::model()->findByPk($id);
         if($model===null)
             throw new CHttpException(404,'The requested page does not exist.');
         return $model;
