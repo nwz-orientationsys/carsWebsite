@@ -195,6 +195,10 @@ class UserController extends Controller
         {
 
             $model->attributes=$_POST['User'];
+            
+            echo "<pre>";
+            print_r($model);
+            exit();
             if($model->save())
                 Yii::app ()->user->setFlash('addsuccess','添加成功');
             //				$this->redirect(array('view','id'=>$model->id));

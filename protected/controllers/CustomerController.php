@@ -35,7 +35,29 @@ class CustomerController extends Controller
     
     public function actionIndex()
     {
-        $this->render('index', array('user'=>$this->loadModel(Yii::app()->user->id), 'userid'=>Yii::app()->user->id));
+
+        $model=new Orders('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Orders']))
+        	$model->attributes=$_GET['Orders'];
+        $model->user_id = Yii::app()->user->id;
+        
+        $dataProvider=new CActiveDataProvider('Orders');
+        
+        $model1=new Cars('search');
+        $model1->unsetAttributes();  // clear any default values
+        if(isset($_GET['Cars']))
+        	$model1->attributes=$_GET['Cars'];
+        $model1->ower_id = Yii::app()->user->id;
+        
+        $dataProvider1=new CActiveDataProvider('Cars');
+        
+        $this->render('index',array(
+        		'user'=>$this->loadModel(Yii::app()->user->id), 'userid'=>Yii::app()->user->id,
+        		'orders'=> $model,
+        		'dataProvider'=>array($dataProvider,$dataProvider1),
+        		'cars'=>$model1,
+        ));
     }
     
     public function actionCreateCar()
@@ -68,7 +90,6 @@ class CustomerController extends Controller
         
         if(isset($_POST['Cars']))
         {
-        
             $model->attributes=$_POST['Cars'];
             if($model->save())
                 Yii::app ()->user->setFlash('updatesuccess','修改成功');

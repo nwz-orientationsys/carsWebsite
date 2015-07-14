@@ -70,10 +70,13 @@ class OrdersController extends Controller
 		if(isset($_POST['Orders']))
 		{
 			$model->attributes=$_POST['Orders'];
+			$model->user_id = Yii::app()->user->id;
+			print_r($model);
+			exit();
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
-
+		//$model->car_id = Yii::app()->request->getParam('id');
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -122,8 +125,15 @@ class OrdersController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$model=new Orders('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Orders']))
+			$model->attributes=$_GET['Orders'];
+		
 		$dataProvider=new CActiveDataProvider('Orders');
+		
 		$this->render('index',array(
+			'orders'=> $model,
 			'dataProvider'=>$dataProvider,
 		));
 	}

@@ -51,7 +51,7 @@ class CarTypes extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'name' => '汽车类型',
 		);
 	}
 
@@ -92,7 +92,9 @@ class CarTypes extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	
 	public static function getCarTypes(){
 	    return CHtml::listData( CarTypes::model()->findAll(), 'id', 'name' );
 	}
+	
 }
