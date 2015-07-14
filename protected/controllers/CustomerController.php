@@ -23,8 +23,8 @@ class CustomerController extends Controller
     {
         return array(
                 array('allow',  // allow all users to perform 'index' and 'view' actions
-                        'actions'=>array('index', 'createCar', 'updateCar', 'deleteCar'),
-                        'users'=>array('*'),
+                        'actions'=>array('index', 'createCar', 'updateCar', 'deleteCar', 'update'),
+                        'roles'=>array('customer'),
                 ),
 
                 array('deny',  // deny all users
@@ -33,31 +33,55 @@ class CustomerController extends Controller
         );
     }
     
+    public function actionView($id)
+    {
+    	$this->render('view',array(
+    			'model'=>$this->loadModel($id),
+    	));
+    }
+    
     public function actionIndex()
     {
 
-        $model=new Orders('search');
-        $model->unsetAttributes();  // clear any default values
+        $ordersModel=new Orders('search');
+        $ordersModel->unsetAttributes();  // clear any default values
         if(isset($_GET['Orders']))
-        	$model->attributes=$_GET['Orders'];
-        $model->user_id = Yii::app()->user->id;
+        	$ordersModel->attributes=$_GET['Orders'];
+        $ordersModel->user_id = Yii::app()->user->id;
         
-        $dataProvider=new CActiveDataProvider('Orders');
-        
-        $model1=new Cars('search');
-        $model1->unsetAttributes();  // clear any default values
+        $carsModel=new Cars('search');
+        $carsModel->unsetAttributes();  // clear any default values
         if(isset($_GET['Cars']))
-        	$model1->attributes=$_GET['Cars'];
-        $model1->ower_id = Yii::app()->user->id;
-        
-        $dataProvider1=new CActiveDataProvider('Cars');
+        	$carsModel->attributes=$_GET['Cars'];
+        $carsModel->ower_id = Yii::app()->user->id;
         
         $this->render('index',array(
         		'user'=>$this->loadModel(Yii::app()->user->id), 'userid'=>Yii::app()->user->id,
-        		'orders'=> $model,
-        		'dataProvider'=>array($dataProvider,$dataProvider1),
-        		'cars'=>$model1,
+        		'orders'=> $ordersModel,
+        		'cars'=>$carsModel,
         ));
+    }
+    
+    public function actionUpdate()
+    {
+    	$model=$this->loadModel(Yii::app()->user->id);
+    	
+    	// Uncomment the following line if AJAX validation is needed
+    	// $this->performAjaxValidation($model);
+    	
+    	if(isset($_POST['User']))
+    	{
+    	
+    		$model->attributes=$_POST['User'];
+    		$model->type = 'customer';
+    		if($model->save())
+    			Yii::app ()->user->setFlash('updatesuccess','修改成功');
+    		//				$this->redirect(array('view','id'=>$model->id));
+    	}
+    	
+    	$this->render('update',array(
+    			'model'=>$model
+    	));
     }
     
     public function actionCreateCar()

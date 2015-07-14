@@ -15,7 +15,7 @@ class OrdersController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
+			//'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -28,7 +28,7 @@ class OrdersController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','delete'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -36,7 +36,7 @@ class OrdersController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin',),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -58,11 +58,13 @@ class OrdersController extends Controller
 
 	/**
 	 * Creates a new model.
+	 * @param integer $id the default Car Id
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($car=null)
 	{
-		$model=new Orders;
+		$model=new Orders('insert');
+		if (!empty($car)) $model->car_id = $car;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -71,10 +73,8 @@ class OrdersController extends Controller
 		{
 			$model->attributes=$_POST['Orders'];
 			$model->user_id = Yii::app()->user->id;
-			print_r($model);
-			exit();
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('/customer'));
 		}
 		//$model->car_id = Yii::app()->request->getParam('id');
 		$this->render('create',array(

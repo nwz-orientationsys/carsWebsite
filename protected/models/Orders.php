@@ -31,7 +31,7 @@ class Orders extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_id, car_id, operator_id, date, created', 'required'),
+			array('user_id, car_id, date', 'required'),
 			array('user_id, car_id', 'length', 'max'=>20),
 			array('time', 'length', 'max'=>2),
 			array('comment', 'length', 'max'=>255),

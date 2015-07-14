@@ -54,7 +54,7 @@
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => '添加车辆',
                     'type' => 'primary',
-                    'url' => 'createCar',
+                    'url' => 'customer/createCar',
                     'icon' => 'plus'
                 ));
                 ?>
@@ -68,14 +68,14 @@
                 		'buttons'=>array(
                 				'book'=>array(
 	                				'label'=>'预约',
-	                				'url'=>'Yii::app()->createUrl("orders/create", array("id"=>$data->id))',
+	                				'url'=>'Yii::app()->createUrl("orders/create", array("car"=>$data->id))',
                 				)),
                 		'updateButtonUrl'=>'Yii::app()->createUrl("customer/updateCar", array("id"=>$data->id))',
                 		'deleteButtonUrl'=>'Yii::app()->createUrl("customer/deleteCar", array("id"=>$data->id))', 'template' => '{view}{update}{delete}{book}'
                 		));
                 
                 $this->widget('bootstrap.widgets.TbGridView', array(
-                		'id' => 'order-grid',
+                		'id' => 'car-grid',
                 		'dataProvider' => $cars->search(),
                 		//'filter' => $orders,
                 		'columns' => $columns1,
@@ -88,9 +88,11 @@
                 <?php
                 
                 $columns = array('date', 'time', 'comment');
-                //if ($hasType) array_push($columns, 'type');
-                
-                //array_push($columns, array('class'=>'bootstrap.widgets.TbButtonColumn', 'deleteConfirmation'=>'确认删除此条记录？', 'template' => '{view}{update}{delete}'));
+                array_push($columns, array(
+                		'class'=>'bootstrap.widgets.TbButtonColumn', 
+                		'deleteConfirmation'=>'确认删除此条记录？', 
+                		'updateButtonUrl'=>'Yii::app()->createUrl("orders/update", array("id"=>$data->id))',
+                		'deleteButtonUrl'=>'Yii::app()->createUrl("orders/delete", array("id"=>$data->id))','template' => '{view}{update}{delete}'));
                 
                 $this->widget('bootstrap.widgets.TbGridView', array(
                 		'id' => 'order-grid',
