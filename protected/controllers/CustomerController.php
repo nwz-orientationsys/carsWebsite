@@ -3,6 +3,8 @@
 class CustomerController extends Controller
 {
 
+    public $layout='//layouts/customer';
+    
     /**
      * @return array action filters
      */
