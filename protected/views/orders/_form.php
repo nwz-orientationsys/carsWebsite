@@ -39,7 +39,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	
 		<?php //echo $form->textField($model,'car_id',array('class' => 'span4')); ?>
 		
-		<?php echo $form->textFieldRow($model,'date',array('class' => 'span4')); ?>
+		<?php echo $form->textFieldRow($model,'date',array('class' => 'span4 datepicker')); ?>
 		
 		<?php echo $form->dropDownListRow($model,'time', array('AM'=>'上午', 'PM'=>'下午'),array('class' => 'span4')); ?>
 

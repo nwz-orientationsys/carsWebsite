@@ -143,6 +143,9 @@ class UserController extends Controller
         $user->scenario = 'passwordupdate';
         if(isset($_POST['User']))
         {
+        	echo "<pre>";
+        	var_dump($user);
+        	die();
             $user->attributes=$_POST['User'];
             if($user->save())
                 Yii::app ()->user->setFlash('success','修改成功');
@@ -193,12 +196,7 @@ class UserController extends Controller
 
         if(isset($_POST['User']))
         {
-
             $model->attributes=$_POST['User'];
-            
-            echo "<pre>";
-            print_r($model);
-            exit();
             if($model->save())
                 Yii::app ()->user->setFlash('addsuccess','添加成功');
             //				$this->redirect(array('view','id'=>$model->id));

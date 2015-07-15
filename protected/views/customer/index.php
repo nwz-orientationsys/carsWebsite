@@ -26,12 +26,12 @@
             
             ?>
             <div class="well">
-                <span><h2>我的汽车</h2></span>
+                <h2><span>我的汽车</span></h2>
                 <?php
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => '添加车辆',
                     'type' => 'primary',
-                    'url' => '/customer/createCar',
+                    'url' => 'createCar',
                     'icon' => 'plus'
                 ));
                 ?>
@@ -46,7 +46,10 @@
                 				'book'=>array(
 	                				'label'=>'预约',
 	                				'url'=>'Yii::app()->createUrl("orders/create", array("car"=>$data->id))',
-                				)),
+                					//'visible' => 'SiteRecommend::isItemInTypeAndId(1, $data->id)?true:false',
+                					'visible'=>'empty($data->isOrdered)',
+                					),
+                				),
                 		'updateButtonUrl'=>'Yii::app()->createUrl("customer/updateCar", array("id"=>$data->id))',
                 		'deleteButtonUrl'=>'Yii::app()->createUrl("customer/deleteCar", array("id"=>$data->id))', 'template' => '{update}{delete}{book}'
                 		));
@@ -61,15 +64,31 @@
             </div>
             
             <div class="well">
-                <span><h2>我的预约记录</h2></span>
+                <h2><span>我的预约记录</span></h2>
                 <?php
                 
-                $columns = array('date', 'time', 'comment');
+                $columns = array(
+                		array('name'=>'车牌', 'type'=>'html', 'value'=>'$data->licenseNumber->licenseNumber'), 
+                		'date',
+                		'time', 
+                		'comment', 
+                		array('name'=>'status', 'type'=>'html', 'value'=>'Orders::getStatusName($data->status)'),
+                		array('name'=>'接车员', 'type'=>'html', 'value'=>'$data->operator->id != 1 ? $data->operator->name : ""'),
+                		);
                 array_push($columns, array(
                 		'class'=>'bootstrap.widgets.TbButtonColumn', 
                 		'deleteConfirmation'=>'确认删除此条记录？', 
-                		'updateButtonUrl'=>'Yii::app()->createUrl("orders/update", array("id"=>$data->id))',
-                		'deleteButtonUrl'=>'Yii::app()->createUrl("orders/delete", array("id"=>$data->id))','template' => '{update}{delete}'));
+                		
+                		'buttons'=>array(
+                				'update'=>array(
+                						'visible'=>'$data->status=="pending"',
+                						'url'=>'Yii::app()->createUrl("orders/update", array("id"=>$data->id))',
+                				),
+                		),
+                		
+                		'deleteButtonUrl'=>'Yii::app()->createUrl("orders/delete", array("id"=>$data->id))',
+                		'template' => '{update}{delete}'
+                ));
                 
                 $this->widget('bootstrap.widgets.TbGridView', array(
                 		'id' => 'order-grid',

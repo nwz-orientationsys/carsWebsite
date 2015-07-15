@@ -8,7 +8,6 @@
  * @property string $email
  * @property string $name
  * @property string $password
- * @property string $type
  * @property string $created
  */
 class Customer extends CActiveRecord {
@@ -47,7 +46,7 @@ class Customer extends CActiveRecord {
         );
     }
     public function check_db_password($attribute, $params) {
-        $user = User::model()->findByPk($this->id);
+        $user = Customer::model()->findByPk($this->id);
         if ($user->password != $this->$attribute) {
             $this->addError($attribute, '原密码输入错误！');
         }
