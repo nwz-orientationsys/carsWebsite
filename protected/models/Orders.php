@@ -35,6 +35,7 @@ class Orders extends CActiveRecord
 			array('user_id, car_id', 'length', 'max'=>20),
 			array('time', 'length', 'max'=>2),
 			array('comment', 'length', 'max'=>255),
+			array('status', 'length', 'max'=>8),
 		    array('operator_id', 'default', 'value' => 1, 'on' => 'insert'),
 		    array('created', 'default', 'value' => new CDbExpression('NOW()'), 'on' => 'insert'),
 			// The following rule is used by search().
@@ -52,6 +53,8 @@ class Orders extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 				'applicant' => array(self::BELONGS_TO, 'Customer', 'user_id'),
+				'operator' => array(self::BELONGS_TO, 'User', 'operator_id'),
+ 				'licenseNumber' => array(self::BELONGS_TO, 'Cars', 'car_id'),
 		);
 	}
 
@@ -67,6 +70,7 @@ class Orders extends CActiveRecord
 			'date' => '接车日期',
 			'time' => '接车时间',
 			'comment' => '备注',
+			'status' => '预约状态',
 			'created' => '创建时间',
 		);
 	}
@@ -95,6 +99,7 @@ class Orders extends CActiveRecord
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('time',$this->time,true);
 		$criteria->compare('comment',$this->comment,true);
+		$criteria->compare('status',$this->status,true);
 		$criteria->compare('created',$this->created,true);
 
 		return new CActiveDataProvider($this, array(
@@ -111,5 +116,11 @@ class Orders extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+	
+	public static function getStatusName($status = null)
+	{
+		$array = array('pending'=>'未分配','accepted'=>'已分配', 'finished'=>'已完成', 'expired'=>'已过期');
+		return $array[$status];
 	}
 }

@@ -39,4 +39,7 @@
                     'columns' => $columns,
                 ));
                 ?>
-	
+			</div>
+		</div>
+	</div>
+</div>

@@ -29,7 +29,7 @@ class CustomerController extends Controller
         				'users'=>array('*')
         		),
                 array('allow',  // allow all users to perform 'index' and 'view' actions
-                        'actions'=>array('index', 'createCar', 'updateCar', 'deleteCar', 'update'),
+                        'actions'=>array('index', 'createCar', 'updateCar', 'deleteCar', 'update', 'passwordupdate'),
                         'roles'=>array('customer'),
                 ),
 
@@ -162,6 +162,22 @@ class CustomerController extends Controller
     	// display the login form
     	$this->renderPartial('login',array('model'=>$model));
     }
+    
+    
+    public function actionPasswordUpdate(){
+    	$user=Customer::model()->findByPk(Yii::app()->user->id);
+    	$user->scenario = 'passwordupdate';
+    	
+    	if(isset($_POST['Customer']))
+    	{
+    		$user->attributes=$_POST['Customer'];
+    		if($user->save())
+    			Yii::app ()->user->setFlash('success','修改成功');
+    		//                           $this->redirect(array('site/index'));
+    	}
+    	$this->render('upaccount',array('user'=>$user));
+    }
+    
     
     /**
      * Returns the data model based on the primary key given in the GET variable.

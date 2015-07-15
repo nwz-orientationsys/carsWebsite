@@ -44,6 +44,7 @@ class Cars extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 				'type'=>array(self::BELONGS_TO, 'CarTypes', 'type_id'),
+				'isOrdered'=>array(self::HAS_MANY, 'Orders', 'car_id', 'on'=>'isOrdered.status = "pending" OR isOrdered.status="accepted"'),
 		);
 	}
 
