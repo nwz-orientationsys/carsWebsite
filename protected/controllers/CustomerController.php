@@ -22,9 +22,13 @@ class CustomerController extends Controller
     public function accessRules()
     {
         return array(
+        		array('allow',
+        				'actions'=>array('login'),
+        				'users'=>array('*')
+        		),
                 array('allow',  // allow all users to perform 'index' and 'view' actions
-                        'actions'=>array('index', 'createCar', 'updateCar', 'deleteCar'),
-                        'users'=>array('*'),
+                        'actions'=>array('index', 'createCar', 'updateCar', 'deleteCar', 'update'),
+                        'roles'=>array('customer'),
                 ),
 
                 array('deny',  // deny all users
@@ -33,9 +37,55 @@ class CustomerController extends Controller
         );
     }
     
+    public function actionView($id)
+    {
+    	$this->render('view',array(
+    			'model'=>$this->loadModel($id),
+    	));
+    }
+    
     public function actionIndex()
     {
-        $this->render('index', array('user'=>$this->loadModel(Yii::app()->user->id), 'userid'=>Yii::app()->user->id));
+
+        $ordersModel=new Orders('search');
+        $ordersModel->unsetAttributes();  // clear any default values
+        if(isset($_GET['Orders']))
+        	$ordersModel->attributes=$_GET['Orders'];
+        $ordersModel->user_id = Yii::app()->user->id;
+        
+        $carsModel=new Cars('search');
+        $carsModel->unsetAttributes();  // clear any default values
+        if(isset($_GET['Cars']))
+        	$carsModel->attributes=$_GET['Cars'];
+        $carsModel->ower_id = Yii::app()->user->id;
+        
+        $this->render('index',array(
+        		'user'=>$this->loadModel(Yii::app()->user->id), 'userid'=>Yii::app()->user->id,
+        		'orders'=> $ordersModel,
+        		'cars'=>$carsModel,
+        ));
+    }
+    
+    public function actionUpdate()
+    {
+    	$model=$this->loadModel(Yii::app()->user->id);
+    	
+    	// Uncomment the following line if AJAX validation is needed
+    	// $this->performAjaxValidation($model);
+    	
+    	if(isset($_POST['User']))
+    	{
+    	
+    		$model->attributes=$_POST['User'];
+    		$model->type = 'customer';
+    		if($model->save())
+    			Yii::app ()->user->setFlash('updatesuccess','修改成功');
+    		//				$this->redirect(array('view','id'=>$model->id));
+    	}
+    	
+    	$this->render('update',array(
+    			'model'=>$model
+    	));
     }
     
     public function actionCreateCar()
@@ -68,7 +118,6 @@ class CustomerController extends Controller
         
         if(isset($_POST['Cars']))
         {
-        
             $model->attributes=$_POST['Cars'];
             if($model->save())
                 Yii::app ()->user->setFlash('updatesuccess','修改成功');
@@ -89,6 +138,29 @@ class CustomerController extends Controller
             $this->redirect(array('customer'));
     }
     
+    //Customer login
+    public function actionLogin(){
+    	$model=new CustomerLoginForm;
+    
+    	// if it is ajax validation request
+    	if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
+    	{
+    		echo CActiveForm::validate($model);
+    		Yii::app()->end();
+    	}
+    
+    	// collect user input data
+    	if(isset($_POST['CustomerLoginForm']))
+    	{
+    		$model->attributes=$_POST['CustomerLoginForm'];
+    		// validate user input and redirect to the previous page if valid
+    		if($model->validate() && $model->login())
+    			$this->redirect(Yii::app()->createUrl('customer/index'));
+    	}
+    	// display the login form
+    	$this->renderPartial('login',array('model'=>$model));
+    }
+    
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
@@ -98,7 +170,7 @@ class CustomerController extends Controller
      */
     public function loadModel($id)
     {
-        $model=User::model()->findByPk($id);
+        $model=Customer::model()->findByPk($id);
         if($model===null)
             throw new CHttpException(404,'The requested page does not exist.');
         return $model;

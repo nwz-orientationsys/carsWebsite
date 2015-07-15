@@ -43,6 +43,7 @@ class Cars extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+				'type'=>array(self::BELONGS_TO, 'CarTypes', 'type_id'),
 		);
 	}
 
@@ -53,9 +54,9 @@ class Cars extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'licenseNumber' => 'License Number',
-			'ower_id' => 'Ower',
-			'type_id' => 'Type',
+			'licenseNumber' => '牌照',
+			'ower_id' => '车主',
+			'type_id' => '汽车类别',
 		);
 	}
 
@@ -97,4 +98,14 @@ class Cars extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	
+	public static function getCustomerCars($id){
+		return CHtml::listData( Cars::model()->findAll('ower_id='.$id), 'id', 'licenseNumber' );
+	}
+	
+	public static function getCustomerCar($id){
+		return CHtml::textField( Cars::model()->findByPk($id), 'id', 'licenseNumber' );
+	}
+	
 }

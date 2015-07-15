@@ -14,7 +14,18 @@ $this->menu=array(
 
 <h1>Orders</h1>
 
-<?php $this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'_view',
-)); ?>
+<div class="well">
+<?php
+
+$columns = array(array('name'=>'user_id','type'=>'html','value'=>'$data->applicant->name'), 'date', 'time', 'comment');
+//if ($hasType) array_push($columns, 'type');
+
+array_push($columns, array('class'=>'bootstrap.widgets.TbButtonColumn', 'deleteConfirmation'=>'确认删除此条记录？', 'template' => '{view}{update}{delete}'));
+
+$this->widget('bootstrap.widgets.TbGridView', array(
+		'id' => 'order-grid',
+		'dataProvider' => $orders->search(),
+		'filter' => $orders,
+		'columns' => $columns,
+));
+?>

@@ -35,8 +35,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 	<?php echo $form->errorSummary($model); ?>
 
-		<?php echo $form->dropDownListRow($model,'car_id',array('car_id' => 'id'),array('class' => 'span4')); ?>
-
+		<?php echo $form->dropDownListRow($model,'car_id',Cars::getCustomerCars(Yii::app()->user->id),array('class' => 'span4')); ?>
+	
+		<?php //echo $form->textField($model,'car_id',array('class' => 'span4')); ?>
+		
 		<?php echo $form->textFieldRow($model,'date',array('class' => 'span4')); ?>
 		
 		<?php echo $form->dropDownListRow($model,'time', array('AM'=>'上午', 'PM'=>'下午'),array('class' => 'span4')); ?>
