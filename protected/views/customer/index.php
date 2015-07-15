@@ -1,35 +1,12 @@
-<div class="content">
-    <div class="header">
-        <h1 class="page-title">员工中心</h1>
-    </div>
 
-    <?php
-    /* @var $this CustomerController */
-
-    $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
-        'links' => array('员工中心' => array('index'), '查看员工 ' . $user->name),
-    ));
-    ?>
-    <div class="container-fluid">
         <div class="btn-toolbar">
             <?php
             $this->widget('bootstrap.widgets.TbButton', array(
                 'label' => '修改',
                 'type' => 'primary',
-                'url' => array('user/update', 'id' => $userid),
+                'url' => array('customer/update', 'id' => $userid),
                 'icon' => 'pencil'
             ));
-            ?>
-            <?php
-            if (Yii::app()->user->checkAccess('admin')) {
-                $this->widget('bootstrap.widgets.TbButton', array(
-                    'label' => '删除',
-                    'type' => '',
-                    'url' => array('user/delete', 'id' => $userid),
-                    'icon' => 'trash',
-                    'htmlOptions' => array('id' => 'delete')
-                ));
-            }
             ?>
         </div>  
         <div class="container-fluid">
@@ -54,7 +31,7 @@
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => '添加车辆',
                     'type' => 'primary',
-                    'url' => 'customer/createCar',
+                    'url' => '/customer/createCar',
                     'icon' => 'plus'
                 ));
                 ?>
@@ -103,8 +80,8 @@
                 ?>
             </div>
         </div>
-    </div>
-</div>
+
+
  <script type="text/javascript">
         $(function() {
             $('.block').css({height: 'auto'});

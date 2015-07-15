@@ -63,6 +63,9 @@ class OrdersController extends Controller
 	 */
 	public function actionCreate($car=null)
 	{
+	    if (Yii::app()->user->checkAccess('customer')) {
+	        $this->layout = '//layouts/customer';
+	    }
 		$model=new Orders('insert');
 		if (!empty($car)) $model->car_id = $car;
 
@@ -89,6 +92,10 @@ class OrdersController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+	    if (Yii::app()->user->checkAccess('customer')) {
+	        $this->layout = '//layouts/customer';
+	    }
+	    
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
