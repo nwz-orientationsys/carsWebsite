@@ -174,37 +174,35 @@ class UserController extends Controller
 
     public function actionCustomers()
     {
-        $model=new User('search');
+        $model=new Customer('search');
+        
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['User']))
-            $model->attributes=$_GET['User'];
-         
-        $model->type = 'customer';
+        if(isset($_GET['Customer']))
+            $model->attributes=$_GET['Customer'];
 
-        $this->render('index',array(
-                'user'=>$model,
+        $this->render('cus_index',array(
+                'customer'=>$model,
                 'hasType'=>false,
         ));
     }
 
     public function actionCreateCustomer()
     {
-        $model=new User;
-
+        $model=new Customer;
+       
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if(isset($_POST['User']))
+        if(isset($_POST['Customer']))
         {
-            $model->attributes=$_POST['User'];
+            $model->attributes=$_POST['Customer'];
             if($model->save())
                 Yii::app ()->user->setFlash('addsuccess','添加成功');
-            //				$this->redirect(array('view','id'=>$model->id));
+            //$this->redirect(array('user/customers'));
         }
 
-        $this->render('create',array(
+        $this->render('cus_create',array(
                 'model'=>$model,
-                'types'=>array('customer'=>'车主')
         ));
     }
 

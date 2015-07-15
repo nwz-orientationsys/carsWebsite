@@ -1,3 +1,4 @@
+
 <?php
 /** @var BootActiveForm $form */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -5,22 +6,22 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     'enableAjaxValidation' => false,
     'enableClientValidation' => true,
     'clientOptions' => array(
-    'validateOnSubmit' => true,
+        'validateOnSubmit' => true,
     ),
     'htmlOptions' => array('class' => 'well'),
-        ));
+));
 ?>
 
 <!--提示信息展示-->
 <?php
 if (Yii::app()->user->hasFlash('addsuccess')) {
-    $this->redirect_message('添加成功', 'success', 3, Yii::app()->createUrl('user/index'));
+    $this->redirect_message('添加成功', 'success', 3, Yii::app()->createUrl('user/customers'));
 } else if (Yii::app()->user->hasFlash('updatesuccess')) {
-    $this->redirect_message('修改成功', 'success', 3, Yii::app()->createUrl('user/index'));
+    $this->redirect_message('修改成功', 'success', 3, Yii::app()->createUrl('user/customers'));
 }
 ?>
 
-<?php echo CHtml::link('返回', array('user/index')); ?>
+<?php echo CHtml::link('返回', array('user/customers')); ?>
 <p class="help-block">带 <span class="required">*</span> 为必填项.</p>
 
 <?php echo $form->textFieldRow($model, 'phone', array('class' => 'span4')); ?>

@@ -64,8 +64,8 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=cars',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'boss',
+			'password' => 'boss',
 			'charset' => 'utf8',
             'tablePrefix'=>'',
 		),
