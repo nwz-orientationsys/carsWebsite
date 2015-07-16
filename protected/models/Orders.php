@@ -36,11 +36,11 @@ class Orders extends CActiveRecord
 			array('time', 'length', 'max'=>2),
 			array('comment', 'length', 'max'=>255),
 			array('status', 'length', 'max'=>8),
-		    array('operator_id', 'default', 'value' => 1, 'on' => 'insert'),
+		    array('operator_id', 'default', 'value' => 1, 'on' => 'insert,update'),
 		    array('created', 'default', 'value' => new CDbExpression('NOW()'), 'on' => 'insert'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, car_id, date, time, comment, created', 'safe', 'on'=>'search'),
+			array('id, user_id, car_id, date, time, comment, created,operator_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -72,6 +72,7 @@ class Orders extends CActiveRecord
 			'comment' => '备注',
 			'status' => '预约状态',
 			'created' => '创建时间',
+		    'operator_id'=>'接车员',
 		);
 	}
 
@@ -101,7 +102,8 @@ class Orders extends CActiveRecord
 		$criteria->compare('comment',$this->comment,true);
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('created',$this->created,true);
-
+		$criteria->compare('operator_id',$this->operator_id,true);
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -122,5 +124,10 @@ class Orders extends CActiveRecord
 	{
 		$array = array('pending'=>'未分配','accepted'=>'已分配', 'finished'=>'已完成', 'expired'=>'已过期');
 		return $array[$status];
+	}
+	
+	/*获取接线员的名字*/
+	public static function getOperatorName(){
+	    return CHtml::listData( User::model()->findAll('type="operator" OR id=1'), 'id', 'name' );
 	}
 }
