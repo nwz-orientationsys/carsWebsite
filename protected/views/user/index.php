@@ -16,7 +16,7 @@
                 $this->widget('bootstrap.widgets.TbButton', array(
                     'label' => '添加员工',
                     'type' => 'primary',
-                    'url' => 'index.php?r=user/create',
+                    'url' => '/user/create',
                     'icon' => 'plus'
                 ));
                 ?>

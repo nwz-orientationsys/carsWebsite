@@ -101,8 +101,8 @@ class Cars extends CActiveRecord
 	}
 	
 	
-	public static function getCustomerCars($id){
-		return CHtml::listData( Cars::model()->findAll('ower_id='.$id), 'id', 'licenseNumber' );
+	public static function getCustomerCars($id=''){
+		return CHtml::listData( Cars::model()->findAll($id ? 'ower_id='.$id : ''), 'id', 'licenseNumber' );
 	}
 	
 	public static function getCustomerCar($id){
