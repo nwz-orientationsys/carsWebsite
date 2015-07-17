@@ -54,7 +54,7 @@ class Customer extends CActiveRecord {
     protected function beforeSave() {
         if ($this->scenario == 'passwordupdate') {
             $this->password = md5($this->password1);
-        } else {
+        } else if ($this->scenario == 'insert'){
             $this->password = md5($this->password);
         }
         return parent::beforeSave();
@@ -77,7 +77,7 @@ class Customer extends CActiveRecord {
             'id' => 'ID',
             'name' => '名字',
             'email' => '邮箱',
-            'phone' => '手机',
+            'phone' => '车主手机号码',
             'password' => '密码',
             'password1' => '新密码',
             'password2' => '确认密码',
