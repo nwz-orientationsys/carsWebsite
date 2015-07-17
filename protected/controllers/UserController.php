@@ -31,7 +31,10 @@ class UserController extends Controller
         				'roles'=>array('operator'),//表示只有角色为admin的用户才能访问
         		),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                        'actions'=>array('create','update','getuser','delete', 'customers', 'createcustomer'),
+                        'actions'=>array(
+                            'create','update','getuser','delete', 'customers', 'createcustomer',
+                            'cusview','cusupdate','cusdelete',
+                        ),
                         'roles'=>array('admin'),//表示只有角色为admin的用户才能访问
                 ),
 
@@ -175,39 +178,110 @@ class UserController extends Controller
 
     public function actionCustomers()
     {
-        $model=new User('search');
+        $model=new Customer('search');
+        
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['User']))
-            $model->attributes=$_GET['User'];
-         
-        $model->type = 'customer';
+        if(isset($_GET['Customer']))
+            $model->attributes=$_GET['Customer'];
 
-        $this->render('index',array(
-                'user'=>$model,
+        $this->render('cus_index',array(
+                'customer'=>$model,
                 'hasType'=>false,
         ));
     }
 
     public function actionCreateCustomer()
     {
-        $model=new User;
-
+        $model=new Customer;
+       
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if(isset($_POST['User']))
+        if(isset($_POST['Customer']))
         {
-            $model->attributes=$_POST['User'];
+            $model->attributes=$_POST['Customer'];
             if($model->save())
                 Yii::app ()->user->setFlash('addsuccess','添加成功');
-            //				$this->redirect(array('view','id'=>$model->id));
+            //$this->redirect(array('user/customers'));
         }
 
-        $this->render('create',array(
+        $this->render('cus_create',array(
                 'model'=>$model,
-                'types'=>array('customer'=>'车主')
         ));
     }
+    
+    
+    /**
+     * Displays a particular model.
+     * @param integer $id the ID of the model to be displayed
+     */
+    public function actionCusView($id)
+    {
+        $this->render('cus_view',array(
+            'customer'=>$this->loadCusModel($id),
+        ));
+    }
+    
+    
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionCusUpdate($id)
+    {
+        $model=$this->loadCusModel($id);
+    
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+    
+        if(isset($_POST['Customer']))
+        {
+    
+            $model->attributes=$_POST['Customer'];
+            if($model->save())
+                Yii::app ()->user->setFlash('updatesuccess','修改成功');
+            //$this->redirect(array('view','id'=>$model->id));
+        }
+    
+        $this->render('cus_update',array(
+            'model'=>$model,
+        ));
+    }
+    
+    
+    
+    /**
+     * Deletes a particular model.
+     * If deletion is successful, the browser will be redirected to the 'admin' page.
+     * @param integer $id the ID of the model to be deleted
+     */
+    public function actionCusDelete($id)
+    {
+        $this->loadCusModel($id)->delete();
+    
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if(!isset($_GET['ajax']))
+            $this->redirect(array('user/customers'));
+    }
+    
+    
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * If the data model is not found, an HTTP exception will be raised.
+     * @param integer $id the ID of the model to be loaded
+     * @return Customer the loaded model
+     * @throws CHttpException
+     */
+    public function loadCusModel($id)
+    {
+        $model=Customer::model()->findByPk($id);
+        if($model===null)
+            throw new CHttpException(404,'The requested page does not exist.');
+        return $model;
+    }
+    
+    
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
