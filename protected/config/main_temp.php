@@ -8,7 +8,7 @@
  Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'车管所年检预约系统',
+	'name'=>'车辆年检预约系统',
         'theme'=>'capital',
 	// preloading 'log' component
 	'preload'=>array('log'),
