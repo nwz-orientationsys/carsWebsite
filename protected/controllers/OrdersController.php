@@ -32,7 +32,7 @@ class OrdersController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','OperatorConfirm', 'OperatorCancel'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -112,6 +112,45 @@ class OrdersController extends Controller
 			'model'=>$model,
 		));
 	}
+	
+	/**
+	 * operator order confirm 
+	 */
+	public function actionOperatorConfirm($id)
+	{
+		if (Yii::app()->user->checkAccess('customer')) {
+			$this->layout = '//layouts/customer';
+		}
+		 
+		$model=$this->loadModel($id);
+		$model->status = 'accepted';
+		$model->operator_id = Yii::app()->user->id;
+		if($model->save()){
+			$this->redirect(Yii::app()->createUrl('site/index'));
+		}
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+	}
+	
+	/*
+	 * operator order cancle
+	 */
+	public function actionOperatorCancel($id)
+	{
+		if (Yii::app()->user->checkAccess('customer')) {
+			$this->layout = '//layouts/customer';
+		}
+			
+		$model=$this->loadModel($id);
+		$model->status = 'pending';
+		$model->operator_id = null;
+		if($model->save()){
+			$this->redirect(Yii::app()->createUrl('site/index'));
+		}
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+	}
+
 
 	/**
 	 * Deletes a particular model.
@@ -174,7 +213,19 @@ class OrdersController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
-
+	
+	/*
+	 * find pendiong orders
+	 */
+	/*
+	public function loadPending()
+	{
+		$model=Orders::model()->findAll();
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
+	}
+	*/
 	/**
 	 * Performs the AJAX validation.
 	 * @param Orders $model the model to be validated

@@ -67,6 +67,7 @@ class Orders extends CActiveRecord
 			'id' => 'ID',
 			'user_id' => '车主',
 			'car_id' => '车',
+			'operator_id' => '接车员',
 			'date' => '接车日期',
 			'time' => '接车时间',
 			'comment' => '备注',
