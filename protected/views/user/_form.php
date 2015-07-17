@@ -12,11 +12,12 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 ?>
 
 <!--提示信息展示-->
-<?php
+<?php 
+$redirectUrl = Yii::app()->user->isOperator() ? Yii::app()->createUrl('site/index') : Yii::app()->createUrl('user/index');
 if (Yii::app()->user->hasFlash('addsuccess')) {
-    $this->redirect_message('添加成功', 'success', 3, Yii::app()->createUrl('user/index'));
+    $this->redirect_message('添加成功', 'success', 3, $redirectUrl);
 } else if (Yii::app()->user->hasFlash('updatesuccess')) {
-    $this->redirect_message('修改成功', 'success', 3, Yii::app()->createUrl('user/index'));
+    $this->redirect_message('修改成功', 'success', 3, $redirectUrl);
 }
 ?>
 
@@ -30,7 +31,7 @@ echo $model->isNewRecord ? $form->passwordFieldRow($model, 'password', array('cl
 
 <?php echo $form->textFieldRow($model, 'name', array('class' => 'span4')); ?>
 <?php echo $form->textFieldRow($model, 'email', array('class' => 'span4')); ?>
-<?php echo isset($types) ? $form->radioButtonListInlineRow($model, 'type', $types, array('separator' => '&nbsp;')) : ''?>
+<?php echo isset($types) && Yii::app()->user->isAdmin() ? $form->radioButtonListInlineRow($model, 'type', $types, array('separator' => '&nbsp;')) : ''?>
 <div class="form-actions">
     <?php
     $this->widget('bootstrap.widgets.TbButton', array(

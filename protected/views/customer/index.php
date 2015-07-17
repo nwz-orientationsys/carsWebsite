@@ -2,7 +2,7 @@
         <div class="btn-toolbar">
             <?php
             $this->widget('bootstrap.widgets.TbButton', array(
-                'label' => '修改',
+                'label' => '修改信息',
                 'type' => 'primary',
                 'url' => array('customer/update', 'id' => $userid),
                 'icon' => 'pencil'

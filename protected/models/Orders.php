@@ -15,6 +15,9 @@
  */
 class Orders extends CActiveRecord
 {
+	public $owner_name;
+	public $operator;
+	
 	/**
 	 * @return string the associated database table name
 	 */
@@ -40,7 +43,7 @@ class Orders extends CActiveRecord
 		    array('created', 'default', 'value' => new CDbExpression('NOW()'), 'on' => 'insert'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, car_id, date, time, comment, created,operator_id', 'safe', 'on'=>'search'),
+			array('id, user_id, owner_name, car_id, operator_id, date, time, comment, created,operator_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,12 +70,14 @@ class Orders extends CActiveRecord
 			'id' => 'ID',
 			'user_id' => '车主',
 			'car_id' => '车',
+			'operator_id' => '接车员',
 			'date' => '接车日期',
 			'time' => '接车时间',
 			'comment' => '备注',
 			'status' => '预约状态',
 			'created' => '创建时间',
 		    'operator_id'=>'接车员',
+			'owner_name'=>'车主'
 		);
 	}
 
@@ -93,10 +98,12 @@ class Orders extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
+		$criteria->with = array('applicant');
+		
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('user_id',$this->user_id,true);
 		$criteria->compare('car_id',$this->car_id,true);
+		$criteria->compare('applicant.name', $this->owner_name, true);
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('time',$this->time,true);
 		$criteria->compare('comment',$this->comment,true);

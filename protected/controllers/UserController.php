@@ -26,6 +26,10 @@ class UserController extends Controller
                         'actions'=>array('index','view','login','passwordupdate'),
                         'users'=>array('*'),
                 ),
+        		array('allow', // allow authenticated user to perform 'create' and 'update' actions
+        				'actions'=>array('update'),
+        				'roles'=>array('operator'),//表示只有角色为admin的用户才能访问
+        		),
                 array('allow', // allow authenticated user to perform 'create' and 'update' actions
                         'actions'=>array(
                             'create','update','getuser','delete', 'customers', 'createcustomer',
@@ -82,8 +86,9 @@ class UserController extends Controller
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id=null)
     {
+    	$id = Yii::app()->user->isOperator() ? Yii::app()->user->id : $id;
         $model=$this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
@@ -146,9 +151,6 @@ class UserController extends Controller
         $user->scenario = 'passwordupdate';
         if(isset($_POST['User']))
         {
-        	echo "<pre>";
-        	var_dump($user);
-        	die();
             $user->attributes=$_POST['User'];
             if($user->save())
                 Yii::app ()->user->setFlash('success','修改成功');
