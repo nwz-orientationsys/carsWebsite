@@ -31,7 +31,7 @@
                 
                 $columns = array(
                     array(
-                        'name' => 'car_id',
+                        'name' => 'car_licenseNumber',
                         'type' => 'html',
                         'value' => '$data->licenseNumber->licenseNumber'
                     ),
@@ -44,7 +44,7 @@
                         'value' => 'Orders::getStatusName($data->status)'
                     ),
                     array(
-                        'name' => 'operator_id',
+                        'name' => 'operator_name',
                         'type' => 'html',
                         'value' => '$data->operator->id != 1 ? $data->operator->name : ""'
                     )
