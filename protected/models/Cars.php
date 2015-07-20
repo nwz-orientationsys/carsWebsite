@@ -100,13 +100,29 @@ class Cars extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	/*check the car_id is ordered or not*/
+	public static function checkOrdered($userId){
+
+	    $info = Orders::model()->findAll('user_id='.$userId.' and status in ("finished","expired")');
+	    var_dump(CJSON::encode($info));exit;
+	    if(Orders::model()->findAll($userId)){
+	        
+	    }
+	}
 	
+	
+	/*根据ower_id查询车牌号*/
 	public static function getCustomerCars($id=''){
+        
 		return CHtml::listData( Cars::model()->findAll($id ? 'ower_id='.$id : ''), 'id', 'licenseNumber' );
 	}
 	
+	
+	
+	
 	public static function getCustomerCar($id){
-		return CHtml::textField( Cars::model()->findByPk($id), 'id', 'licenseNumber' );
+        
+		return CHtml::listData( Cars::model()->findByPk($id), 'id', 'licenseNumber' );
 	}
 	
 }

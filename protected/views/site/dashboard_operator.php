@@ -32,7 +32,7 @@ $subscribe_num = Orders::model()->count( 'DATE(created) >= :today', array(':toda
                 <?php 
                 
                 $columns = array(array('name'=>'name','type'=>'html','value'=>'Chtml::link($data->name,array("user/view","id"=>$data->id))'), 'email', 'phone');
-                if ($hasType) array_push($columns, 'type');
+                if (isset($hasType)) array_push($columns, 'type');
                 
                 array_push($columns, array('class'=>'bootstrap.widgets.TbButtonColumn', 'deleteConfirmation'=>'确认删除此条记录？', 'template' => '{view}'));
                 

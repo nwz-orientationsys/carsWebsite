@@ -118,4 +118,14 @@ class Customer extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+    
+    /*获取客户的名字*/
+    public static function getCustomerName(){
+        return CHtml::listData( Customer::model()->findAll(), 'id', 'name' );
+    }
+    
+    /*获取客户的名字*/
+    public static function getCustomerNameById($id=''){
+        return CHtml::listData( Customer::model()->findAll(array('id'=>$id)), 'id', 'name' );
+    }
 }
