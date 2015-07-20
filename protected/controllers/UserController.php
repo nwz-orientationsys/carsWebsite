@@ -50,9 +50,32 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        $this->render('view',array(
-                'user'=>$this->loadModel($id),
-        ));
+        	$acceptedOrders = new Orders('search');
+        	$acceptedOrders->unsetAttributes();
+        	$acceptedOrders->operator_id = $id;
+        	$acceptedOrders->status='accepted';
+        
+        	if(isset($_GET['Orders'])){
+        		$acceptedOrders->attributes=$_GET['Orders'];
+        	}
+        	
+        	$person = User::model()->findByPk($id);
+        	/*
+        	echo "<pre>";
+        	var_dump($person);
+        	exit();
+        	*/
+        	$flag = 1;
+        	if($person->type == 'operator'){
+        		$flag = 0;
+        	}
+        	
+        	$this->render('view', array(
+        			'acceptedOrders'=>$acceptedOrders,
+        			//'operator'=>$operator,
+        			'user'=>$this->loadModel($id),
+        			'flag'=>$flag,
+        	));
     }
 
     /**
@@ -171,6 +194,9 @@ class UserController extends Controller
                 'hasType'=>true
         ));
     }
+    
+    
+    
 
     /***************************************
      *
@@ -220,6 +246,7 @@ class UserController extends Controller
     {
         $this->render('cus_view',array(
             'customer'=>$this->loadCusModel($id),
+			'cars'=>$this->loadCusCarModel($id),        		
         ));
     }
     
@@ -282,7 +309,14 @@ class UserController extends Controller
         return $model;
     }
     
-    
+    public function loadCusCarModel($id)
+    {
+    	$model = new Cars('search');
+    	$model->ower_id = $id;
+    	if($model===null)
+    		throw new CHttpException(404,'The requested page does not exist.');
+    	return $model;
+    }
 
     /**
      * Returns the data model based on the primary key given in the GET variable.
