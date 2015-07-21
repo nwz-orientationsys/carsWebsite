@@ -48,7 +48,7 @@
         $this->widget('bootstrap.widgets.TbButton', array(
             'label' => '添加车辆',
             'type' => 'primary',
-            'url' => 'createCar',
+            'url' => 'customer/createCar',
             'icon' => 'plus'
         ));
         ?>
@@ -60,18 +60,18 @@
         		'class'=>'bootstrap.widgets.TbButtonColumn', 
         		'deleteConfirmation'=>'确认删除此条记录？', 
         		 'buttons'=>array(
-        				'book'=>array(
+        				/* 'book'=>array(
             				'label'=>'预约',
             				'url'=>'Yii::app()->createUrl("orders/create", array("car"=>$data->id))',
         					//'visible' => 'SiteRecommend::isItemInTypeAndId(1, $data->id)?true:false',
         					'visible'=>'empty($data->isOrdered)',
-        					),
-                            'update'=>array('label'=>'更新车辆信息'),
-                            'delete'=>array('label'=>'删除该车辆'),
+        					), */
+                        'update'=>array('label'=>'更新车辆信息'),
+                        'delete'=>array('label'=>'删除该车辆'),
         				), 
         		'updateButtonUrl'=>'Yii::app()->createUrl("customer/updateCar", array("id"=>$data->id))',
         		'deleteButtonUrl'=>'Yii::app()->createUrl("customer/deleteCar", array("id"=>$data->id))', 
-        		'template' => '{update}{delete}{book}'
+        		'template' => '{update}{delete}'
         		));
         
         $this->widget('bootstrap.widgets.TbGridView', array(
