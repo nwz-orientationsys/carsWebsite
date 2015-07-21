@@ -48,29 +48,17 @@
             ?>
 
             <div class="well">
-                <span><h2>我的客户</h2></span>
+                <h2><span>车主汽车</span></h2>
                 <?php
-                /*$criteria = new CDbCriteria;
-                //$criteria->with = array('customer');
-                //$criteria->together = true;
-                $criteria->compare('employee_id', $user->id);
-                $dataProvider = new CActiveDataProvider('Customer', array(
-                    'criteria' => $criteria,
-                ));
+                $columns1 = array('licenseNumber', array('name'=>'type_id', 'type'=>'html', 'value'=>'$data->type->name'));
+                //if ($hasType) array_push($columns, 'type');
+                
                 $this->widget('bootstrap.widgets.TbGridView', array(
-                    'id' => 'user-grid',
-                    'dataProvider' => $dataProvider,
-                    'columns' => array(
-                        'name',
-                        array('name' => 'amount_on_hand', 'value' => 'CustomerProduct::getOnHandMoney($data->id)', 'htmlOptions' => array('style' => 'width:14%')),
-                        array('name' => 'total_amount', 'value' => 'CustomerProduct::getTotal($data->id)', 'htmlOptions' => array('style' => 'width:14%')),
-                        array('name' => 'gender', 'value' => 'Customer::showGender($data->gender)'),
-                        array('name' => 'idtype', 'value' => '$data->idtype==1?"身份证":"护照"', 'htmlOptions' => array('style' => 'width:10%')),
-                        'identity_card',
-                        'telephone',
-                        'email',
-                    ),
-                ));*/
+                		'id' => 'car-grid',
+                		'dataProvider' => $cars->search(),
+                		//'filter' => $orders,
+                		'columns' => $columns1,
+                ));
                 ?>
             </div>
         </div>
